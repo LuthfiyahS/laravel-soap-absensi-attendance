@@ -23,7 +23,7 @@
                 <li class="{{ request()->is('jam-kerja') ? 'active' : '' }}">
                     <a href="/jam-kerja"><i class="fas fa-clock"></i><span>Jam Kerja</span></a>
                 </li>
-                <li>
+                <li class="{{ request()->is('mesin-fingerprint') ? 'active' : '' }}">
                     <a href="/mesin-fingerprint"><i class="fas fa-fingerprint"></i><span>Mesin Fingerprint</span></a>
                 </li>
                 <li class="menu-title">

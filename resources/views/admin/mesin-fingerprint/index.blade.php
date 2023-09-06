@@ -5,15 +5,81 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">Departments</h3>
+                    <h3 class="page-title">Mesin Fingerprint</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Departments</li>
+                        <li class="breadcrumb-item active">Mesin Fingerprint</li>
                     </ul>
                 </div>
             </div>
         </div>
 
+        
+        <div class="row">
+            <div class="col-xl-4 col-sm-4 col-12">
+                <div class="card inovices-card">
+                    <div class="card-body">
+                        <div class="inovices-widget-header">
+                            <span class="inovices-widget-icon">
+                                <span style="color: #e2e0e09a;">
+                                    <i class="fas fa-sync fa-3x"></i>
+                                  </span>
+                            </span>
+                            <div class="inovices-dash-count">
+                                <div class="inovices-amount">
+                                    8X
+                                </div>
+                            </div>
+                        </div>
+                        <p class="inovices-all">
+                            Disinkronisasi
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-4 col-12">
+                <div class="card inovices-card">
+                    <div class="card-body">
+                        <div class="inovices-widget-header">
+                            <span class="inovices-widget-icon">
+                                <span style="color: #e2e0e09a;">
+                                    <i class="fas fa-calendar fa-3x"></i>
+                                  </span>
+                            </span>
+                            <div class="inovices-dash-count">
+                                <div class="inovices-amount">
+                                    19 Juli 2023
+                                </div>
+                            </div>
+                        </div>
+                        <p class="inovices-all">
+                            Terakhir Sinkroninasi
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-4 col-12">
+                <div class="card inovices-card">
+                    <div class="card-body">
+                        <div class="inovices-widget-header">
+                            <span class="inovices-widget-icon">
+                                <span style="color: #e2e0e09a;">
+                                    <i class="fas fa-file fa-3x"></i>
+                                  </span>
+                            </span>
+                            <div class="inovices-dash-count">
+                                <div class="inovices-amount">
+                                    2,05,545
+                                </div>
+                            </div>
+                        </div>
+                        <p class="inovices-all">
+                            Log Tersimpan
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="card card-table">
@@ -22,11 +88,11 @@
                         <div class="page-header">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="page-title">Departments</h3>
+                                    <h3 class="page-title">Mesin Fingerprint</h3>
                                 </div>
                                 <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-download"></i>
-                                        Download</a>
+                                    <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-sync"></i>
+                                        Sinkronisasi</a>
                                     <a data-bs-toggle="modal" data-bs-target="#create-modal" class="btn btn-primary"><i
                                             class="fas fa-plus"></i></a>
                                 </div>
@@ -36,24 +102,37 @@
                         <table class="datatable table table-stripped" id='data_tbl'>
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div class="form-check check-tables">
-                                            <input class="form-check-input" type="checkbox" value="something">
-                                        </div>
-                                    </th>
+                                    <th></th>
                                     <th>Nama</th>
+                                    <th>IP</th>
+                                    <th>Comkey</th>
+                                    <th>Status</th>
+                                    <th>Konektivitas Mesin</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($departemen as $x)
+                                @foreach ($mesinfingerprint as $x)
                                     <tr>
-                                        <td>
-                                            <div class="form-check check-tables">
-                                                <input class="form-check-input" type="checkbox" value="something">
-                                            </div>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $x->name }}</td>
+                                        <td>{{ $x->ip }}</td>
+                                        <td>{{ $x->comkey }}</td>
+                                        <td>@if ($x->status == 0)
+                                                <p class="badge badge-danger text-white">Tidak Aktif</p>
+                                            @elseif($x->status == 1)
+                                                <p class="badge badge-info text-white">Aktif</p>
+                                            @endif
                                         </td>
-                                        <td >{{ $x->name }}</td>
+                                        <td>
+                                            <a href="{{ route('mesin-fingerprint.show', $x->id) }}" class="badge badge-soft-info" >
+                                                    <i class="feather-edit"></i> Cek Koneksi Mesin Fingerprint
+                                                </a> <br>
+                                                <a href="#" class="badge badge-soft-danger"
+                                                    data-bs-toggle="modal" data-bs-target="#delete-modal{{ $x->id }}">
+                                                    <i class="feather-trash"></i> Hapus Log Mesin Fingerprint
+                                                </a>
+                                        </td>
                                         <td>
                                            <div class="text-end">
                                                 <a href="#" class="btn btn-sm bg-danger-light"
@@ -72,7 +151,7 @@
                                         aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form action="{{ route('departemen.update', $x->id) }}" method="POST">
+                                                <form action="{{ route('mesin-fingerprint.update', $x->id) }}" method="POST">
                                                     @method('PUT')
                                                     @csrf
                                                     <div class="modal-header">
@@ -94,6 +173,34 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>IP</label>
+                                                                <input type="text" name="ip" val-type="text" class="form-control" value="{{$x->ip}}"></input>
+                                                            </div>
+                                                        </div>
+                                        
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Key</label>
+                                                                <input type="text" name="comkey" val-type="text" class="form-control" value="{{$x->comkey}}"></input>
+                                                            </div>
+                                                        </div>
+                                        
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Status</label>
+                                                                <select name="status" id="status" class="form-control selectpicker">
+                                                                    @if ($x->status == '1')
+                                                                        <option value="1" selected>Aktif</option>
+                                                                        <option value="0">Tidak Aktif</option>
+                                                                    @else
+                                                                    <option value="1">Aktif</option>
+                                                                    <option value="0" selected>Tidak Aktif</option>
+                                                                    @endif
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary-light waves-effect"
@@ -113,7 +220,7 @@
                                         aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form action="{{ route('departemen.destroy', $x->id) }}" method="post">
+                                                <form action="{{ route('mesin-fingerprint.destroy', $x->id) }}" method="post">
                                                     @method('DELETE')
                                                     @csrf
                                                     <div class="modal-body text-center">
@@ -152,11 +259,11 @@
             aria-hidden="true" style="display: none">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form action="{{ route('departemen.store') }}" method="POST">
+                    <form action="{{ route('mesin-fingerprint.store') }}" method="POST">
                         @csrf
                         <div class="modal-header">
                             <h4 class="modal-title">
-                                Create
+                                Tambah Data Mesin
                             </h4>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
@@ -167,8 +274,31 @@
                                     <div class="mb-3">
                                         <label for="field-1" class="form-label">Nama Divisi</label>
                                         <input type="text" class="form-control" name="name"
-                                            placeholder="nama divisi" />
+                                            placeholder="Nama Mesin" />
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>IP</label>
+                                    <input type="text" name="ip" val-type="text" class="form-control"></input>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Key</label>
+                                    <input type="text" name="comkey" val-type="text" class="form-control"></input>
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Status</label>
+                                    <select name="status" id="status" class="form-control selectpicker">
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

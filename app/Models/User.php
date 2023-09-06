@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(RoleUser::class,'type');
     }
+
+    public function log_finger()
+    {
+        return $this->hashOne(LogFingerprint::class);
+    }
 }

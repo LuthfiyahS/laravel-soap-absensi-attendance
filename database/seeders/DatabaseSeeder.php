@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CreateRoleUsersSeeder::class,
             CreateDepartemenSeeder::class,
             CreateUsersSeeder::class,
+            CreateMesinFingerprintSeeder::class,
         ]);
     }
 }
