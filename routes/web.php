@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\DepartemenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,9 @@ Auth::routes();
 
 // Users Routes
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware('auth');
-Route::middleware(['auth', 'user-access:0'])->group(function () {
+Route::middleware(['auth', 'user-access:1'])->group(function () {
   
-    // Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+        //Route::resource('/departemen', DepartemenController::class);
 });
 
 // Manager Routes
@@ -36,7 +37,7 @@ Route::middleware(['auth', 'user-access:0'])->group(function () {
 
 // Super Admin Routes
 
-Route::middleware(['auth', 'user-access:1'])->group(function () {
+Route::middleware(['auth', 'user-access:2'])->group(function () {
   
-    Route::get('/super-admin/dashboard', [HomeController::class, 'superAdminDashboard'])->name('super.admin.dashboard');
+    Route::resource('/departemen', DepartemenController::class);
 });

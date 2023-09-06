@@ -1,227 +1,241 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-<meta charset="utf-8">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-<title>{{ config('app.name', 'Laravel') }}</title>
+    <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-<link rel="shortcut icon" href="{{asset('theme')}}/assets/img/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('theme') }}/assets/img/favicon.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
 
-<link rel="stylesheet" href="{{asset('theme')}}/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/bootstrap/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="{{asset('theme')}}/assets/plugins/feather/feather.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/feather/feather.css">
 
-<link rel="stylesheet" href="{{asset('theme')}}/assets/plugins/icons/flags/flags.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/icons/flags/flags.css">
 
-<link rel="stylesheet" href="{{asset('theme')}}/assets/plugins/fontawesome/css/fontawesome.min.css">
-<link rel="stylesheet" href="{{asset('theme')}}/assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/fontawesome/css/all.min.css">
 
-<link rel="stylesheet" href="{{asset('theme')}}/assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> --}}
+
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/style.css">
 </head>
+
 <body>
+    @include('sweetalert::alert')
 
-<div class="main-wrapper">
+    <div class="main-wrapper">
 
-<div class="header">
+        <div class="header">
 
-<div class="header-left">
-<a href="index.html" class="logo">
-<img src="{{asset('theme')}}/assets/img/logo.png" alt="Logo">
-</a>
-<a href="index.html" class="logo logo-small">
-<img src="{{asset('theme')}}/assets/img/logo-small.png" alt="Logo" width="30" height="30">
-</a>
-</div>
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="{{ asset('theme') }}/assets/img/logo.png" alt="Logo">
+                </a>
+                <a href="index.html" class="logo logo-small">
+                    <img src="{{ asset('theme') }}/assets/img/logo-small.png" alt="Logo" width="30"
+                        height="30">
+                </a>
+            </div>
 
-<div class="menu-toggle">
-<a href="javascript:void(0);" id="toggle_btn">
-<i class="fas fa-bars"></i>
-</a>
-</div>
+            <div class="menu-toggle">
+                <a href="javascript:void(0);" id="toggle_btn">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
 
-<div class="top-nav-search">
+            {{-- <div class="top-nav-search">
 <form>
 <input type="text" class="form-control" placeholder="Search here">
 <button class="btn" type="submit"><i class="fas fa-search"></i></button>
 </form>
-</div>
+</div> --}}
 
 
-<a class="mobile_btn" id="mobile_btn">
-<i class="fas fa-bars"></i>
-</a>
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fas fa-bars"></i>
+            </a>
 
 
-<ul class="nav user-menu">
-<li class="nav-item dropdown noti-dropdown me-2">
-<a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
-<img src="{{asset('theme')}}/assets/img/icons/header-icon-05.svg" alt="">
-</a>
-<div class="dropdown-menu notifications">
-<div class="topnav-dropdown-header">
-<span class="notification-title">Notifications</span>
-<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
-</div>
-<div class="noti-content">
-<ul class="notification-list">
-<li class="notification-message">
-<a href="#">
-<div class="media d-flex">
-<span class="avatar avatar-sm flex-shrink-0">
-<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('theme')}}/assets/img/profiles/avatar-02.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
-<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media d-flex">
-<span class="avatar avatar-sm flex-shrink-0">
-<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('theme')}}/assets/img/profiles/avatar-11.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">International Software Inc</span> has sent you a invoice in the amount of <span class="noti-title">$218</span></p>
-<p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media d-flex">
-<span class="avatar avatar-sm flex-shrink-0">
-<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('theme')}}/assets/img/profiles/avatar-17.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">Apple iPhone XR</span></p>
-<p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-<li class="notification-message">
-<a href="#">
-<div class="media d-flex">
-<span class="avatar avatar-sm flex-shrink-0">
-<img class="avatar-img rounded-circle" alt="User Image" src="{{asset('theme')}}/assets/img/profiles/avatar-13.jpg">
-</span>
-<div class="media-body flex-grow-1">
-<p class="noti-details"><span class="noti-title">Mercury Software Inc</span> added a new product <span class="noti-title">Apple MacBook Pro</span></p>
-<p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-</div>
-</div>
-</a>
-</li>
-</ul>
-</div>
-<div class="topnav-dropdown-footer">
-<a href="#">View all Notifications</a>
-</div>
-</div>
-</li>
-
-<li class="nav-item zoom-screen me-2">
-<a href="#" class="nav-link header-nav-list">
-<img src="{{asset('theme')}}/assets/img/icons/header-icon-04.svg" alt="">
-</a>
-</li>
-
-<li class="nav-item dropdown has-arrow new-user-menus">
-<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-<span class="user-img">
-<img class="rounded-circle" src="{{asset('theme')}}/assets/img/profiles/avatar-01.jpg" width="31" alt="Soeng Souy">
-<div class="user-text">
-<h6>{{auth()->user()->name}}</h6>
-@if (auth()->user()->type == 1)
-    <p class="text-muted mb-0">Administrator</p>
-@else
-    <p class="text-muted mb-0">Pengguna</p>
-@endif
-{{-- <p class="text-muted mb-0">{{auth()->user()->type}}</p> --}}
-</div>
-</span>
-</a>
-<div class="dropdown-menu">
-<div class="user-header">
-<div class="avatar avatar-sm">
-<img src="{{asset('theme')}}/assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
-</div>
-<div class="user-text">
-<h6>{{auth()->user()->name}}</h6>
-@if (auth()->user()->type == 1)
-    <p class="text-muted mb-0">Administrator</p>
-@else
-    <p class="text-muted mb-0">Pengguna</p>
-@endif
-{{-- <p class="text-muted mb-0">Administrator</p> --}}
-</div>
-</div>
-<a class="dropdown-item" href="profile.html">My Profile</a>
-<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+            <ul class="nav user-menu">
+                <li class="nav-item dropdown noti-dropdown me-2">
+                    <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
+                        <img src="{{ asset('theme') }}/assets/img/icons/header-icon-05.svg" alt="">
+                    </a>
+                    <div class="dropdown-menu notifications">
+                        <div class="topnav-dropdown-header">
+                            <span class="notification-title">Notifications</span>
+                            <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+                        </div>
+                        <div class="noti-content">
+                            <ul class="notification-list">
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media d-flex">
+                                            <span class="avatar avatar-sm flex-shrink-0">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ asset('theme') }}/assets/img/profiles/avatar-02.jpg">
+                                            </span>
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
+                                                    approved <span class="noti-title">your estimate</span></p>
+                                                <p class="noti-time"><span class="notification-time">4 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media d-flex">
+                                            <span class="avatar avatar-sm flex-shrink-0">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ asset('theme') }}/assets/img/profiles/avatar-11.jpg">
+                                            </span>
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details"><span class="noti-title">International Software
+                                                        Inc</span> has sent you a invoice in the amount of <span
+                                                        class="noti-title">$218</span></p>
+                                                <p class="noti-time"><span class="notification-time">6 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media d-flex">
+                                            <span class="avatar avatar-sm flex-shrink-0">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ asset('theme') }}/assets/img/profiles/avatar-17.jpg">
+                                            </span>
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details"><span class="noti-title">John Hendry</span> sent
+                                                    a cancellation request <span class="noti-title">Apple iPhone
+                                                        XR</span></p>
+                                                <p class="noti-time"><span class="notification-time">8 mins ago</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="notification-message">
+                                    <a href="#">
+                                        <div class="media d-flex">
+                                            <span class="avatar avatar-sm flex-shrink-0">
+                                                <img class="avatar-img rounded-circle" alt="User Image"
+                                                    src="{{ asset('theme') }}/assets/img/profiles/avatar-13.jpg">
+                                            </span>
+                                            <div class="media-body flex-grow-1">
+                                                <p class="noti-details"><span class="noti-title">Mercury Software
+                                                        Inc</span> added a new product <span class="noti-title">Apple
+                                                        MacBook Pro</span></p>
+                                                <p class="noti-time"><span class="notification-time">12 mins
+                                                        ago</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="topnav-dropdown-footer">
+                            <a href="#">View all Notifications</a>
+                        </div>
+                    </div>
+                </li>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-</div>
-</li>
+                <li class="nav-item zoom-screen me-2">
+                    <a href="#" class="nav-link header-nav-list">
+                        <img src="{{ asset('theme') }}/assets/img/icons/header-icon-04.svg" alt="">
+                    </a>
+                </li>
 
-</ul>
+                <li class="nav-item dropdown has-arrow new-user-menus">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="{{ asset('theme') }}/assets/img/profiles/avatar-01.jpg"
+                                width="31" alt="Soeng Souy">
+                            <div class="user-text">
+                                <h6>{{ auth()->user()->name }}</h6>
+                                @if (auth()->user()->type == 2)
+                                    <p class="text-muted mb-0">Administrator</p>
+                                @else
+                                    <p class="text-muted mb-0">Pengguna</p>
+                                @endif
+                                {{-- <p class="text-muted mb-0">{{auth()->user()->type}}</p> --}}
+                            </div>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="avatar avatar-sm">
+                                <img src="{{ asset('theme') }}/assets/img/profiles/avatar-01.jpg" alt="User Image"
+                                    class="avatar-img rounded-circle">
+                            </div>
+                            <div class="user-text">
+                                <h6>{{ auth()->user()->name }}</h6>
+                                @if (auth()->user()->type == 2)
+                                    <p class="text-muted mb-0">Administrator</p>
+                                @else
+                                    <p class="text-muted mb-0">Pengguna</p>
+                                @endif
+                                {{-- <p class="text-muted mb-0">Administrator</p> --}}
+                            </div>
+                        </div>
+                        <a class="dropdown-item" href="profile.html">My Profile</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
 
-</div>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
 
 
-@if (auth()->user()->type == 1)
-    @include('partials.sidebar_admin')
-@else
-    @include('partials.sidebar_user')
-@endif
+        @if (auth()->user()->type == 2)
+            @include('partials.sidebar_admin')
+        @else
+            @include('partials.sidebar_user')
+        @endif
 
 
-<div class="page-wrapper">
-<div class="content container-fluid">
-
-<div class="page-header">
-<div class="row">
-<div class="col">
-<h3 class="page-title">Blank Page</h3>
-<ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-<li class="breadcrumb-item active">Blank Page</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div class="row">
-<div class="col-sm-12">
-    @yield('content')
-</div>
-</div>
-</div>
-</div>
-
-</div>
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+                @yield('content')
+            </div>
+        </div>
 
 
-<script src="{{asset('theme')}}/assets/js/jquery-3.6.0.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/js/jquery-3.6.0.min.js"></script>
 
-<script src="{{asset('theme')}}/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<script src="{{asset('theme')}}/assets/js/feather.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/js/feather.min.js"></script>
 
-<script src="{{asset('theme')}}/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-<script src="{{asset('theme')}}/assets/js/script.js"></script>
+        {{-- <script src="{{ asset('theme') }}/assets/plugins/datatables/jquery.dataTables.min.js"></script> --}}
+        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+        <script src="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.js"></script>
+
+        <script src="{{ asset('theme') }}/assets/js/script.js"></script>
 </body>
+
 </html>

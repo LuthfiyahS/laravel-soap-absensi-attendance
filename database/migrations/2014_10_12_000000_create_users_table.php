@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('type')->default(0); /* Users: 0=>User, 1=>Super Admin */
+            //$table->tinyInteger('type')->default(0); /* Users: 0=>User, 1=>Super Admin */
+            $table->foreignId('type')->references('id')->on('role_users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('departemen_id')->references('id')->on('departemens')->onUpdate('cascade')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
