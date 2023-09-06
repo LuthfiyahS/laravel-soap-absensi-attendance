@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('log_fingerprints', function (Blueprint $table) {
+        Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('user_id');
             $table->foreignId('user_id')->references('id')->on('users')->nullable();
-            $table->datetime('datetime');
-            $table->foreignId('mesin_id')->references('id')->on('mesin_fingerprints')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('status');
-            $table->foreignId('sync_id')->references('id')->on('sync_fingerprints')->onUpdate('cascade')->onDelete('cascade')->nullable();
+            $table->integer('kehadiran')->nullable();//izin, hadir
+            $table->integer('status')->nullable();//tepat waktu atau terlambat
+            $table->date('tanggal')->nullable();
+            $table->time('jam_masuk')->nullable();
+            $table->time('jam_pulang')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log_fingerprints');
+        Schema::dropIfExists('absensi');
     }
 };

@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->hashOne(LogFingerprint::class);
     }
+
+    public function absensi()
+    {
+        return $this->hashOne(Absensi::class);
+    }
 }

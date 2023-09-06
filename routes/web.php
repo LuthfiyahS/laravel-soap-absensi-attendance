@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\DepartemenController;
 use App\Http\Controllers\Admin\JamKerjaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MesinFingerprintController;
+use App\Http\Controllers\Admin\AbsensiController;
+
 
 
 /*
@@ -47,5 +49,6 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::resource('/pengguna', UserController::class);
     Route::resource('/jam-kerja', JamKerjaController::class);
     Route::resource('/mesin-fingerprint', MesinFingerprintController::class);
+    Route::resource('/absensi', AbsensiController::class);
 
 });

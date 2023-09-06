@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.css">
     {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> --}}
 
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/bootstrap-datetimepicker.min.css"/>
+
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/style.css">
 </head>
 
@@ -229,11 +231,17 @@
 
         <script src="{{ asset('theme') }}/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-        {{-- <script src="{{ asset('theme') }}/assets/plugins/datatables/jquery.dataTables.min.js"></script> --}}
-        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/plugins/select2/js/select2.min.js"></script>
+
+        <script src="{{ asset('theme') }}/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+        {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> --}}
 
         <script src="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.js"></script>
+
+        <script src="{{ asset('theme') }}/assets/plugins/moment/moment.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/js/bootstrap-datetimepicker.min.js"></script>
+
 
         <script src="{{ asset('theme') }}/assets/js/script.js"></script>
 </body>

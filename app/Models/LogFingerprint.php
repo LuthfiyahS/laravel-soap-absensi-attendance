@@ -10,7 +10,7 @@ class LogFingerprint extends Model
     use HasFactory;
     protected $table = 'log_fingerprints';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'datetime', 'mesin_id', 'status'];
+    protected $fillable = ['user_id', 'datetime', 'mesin_id', 'status','sync_id'];
 
     public function user()
     {
@@ -20,5 +20,10 @@ class LogFingerprint extends Model
     public function mesin()
     {
         return $this->belongsTo(MesinFingerprint::class,'mesin_id');
+    }
+
+    public function sync()
+    {
+        return $this->belongsTo(MesinFingerprint::class,'sync_id');
     }
 }

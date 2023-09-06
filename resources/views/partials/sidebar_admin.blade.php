@@ -29,8 +29,8 @@
                 <li class="menu-title">
                     <span>Laporan Absensi</span>
                 </li>
-                <li>
-                    <a href="/dashboard"><i class="fas fa-clipboard-list"></i><span>Laporan Absensi</span></a>
+                <li class="{{ request()->is('absensi') ? 'active' : '' }}">
+                    <a href="/absensi"><i class="fas fa-clipboard-list"></i><span>Laporan Absensi</span></a>
                 </li>
             </ul>
         </div>
