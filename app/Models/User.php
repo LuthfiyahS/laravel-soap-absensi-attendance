@@ -50,4 +50,14 @@ class User extends Authenticatable
     //         get: fn ($value) =>  ["user", "super-admin"][$value],
     //     );
     // }
+
+    public function departemen()
+    {
+        return $this->belongsTo(Departemen::class,'departemen_id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(RoleUser::class,'type');
+    }
 }

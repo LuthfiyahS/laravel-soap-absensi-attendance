@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\DepartemenController;
-
+use App\Http\Controllers\Admin\JamKerjaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,4 +40,5 @@ Route::middleware(['auth', 'user-access:1'])->group(function () {
 Route::middleware(['auth', 'user-access:2'])->group(function () {
   
     Route::resource('/departemen', DepartemenController::class);
+    Route::resource('/jam-kerja', JamKerjaController::class);
 });

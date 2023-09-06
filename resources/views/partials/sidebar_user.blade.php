@@ -6,10 +6,10 @@
                     <span>Main Menu</span>
                 </li>
                 <li>
-                    <a href="index.html"><i class="feather-grid"></i> <span>Beranda</span></a>
+                    <a href="/dashboard"><i class="feather-grid"></i> <span>Beranda</span></a>
                 </li>
                 <li>
-                    <a href="index.html"><i class="fas fa-clipboard-list"></i><span>Laporan Absensi</span></a>
+                    <a href="/dashboard"><i class="fas fa-clipboard-list"></i><span>Laporan Absensi</span></a>
                 </li>
             </ul>
         </div>

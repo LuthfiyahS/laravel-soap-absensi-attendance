@@ -7,7 +7,7 @@
                 <div class="col">
                     <h3 class="page-title">Departments</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active">Departments</li>
                     </ul>
                 </div>
@@ -77,26 +77,26 @@
                                                 <input class="form-check-input" type="checkbox" value="something">
                                             </div>
                                         </td>
-                                        <td>{{ $x->name }}</td>
+                                        <td >{{ $x->name }}</td>
                                         <td>
-                                            <form action="{{ route('departemen.destroy',$x->id) }}" method="post" class="form" id="form">
-                                                @method('DELETE')
-                                                @csrf
-                                            <button type="button" class="btn btn-sm bg-danger-light" data-bs-toggle="modal"
-                                                data-bs-target="#edit-modal{{ $x->id }}">
-                                                <i class="feather-edit"></i>
-                                            </button>
-                                            <button type="submit" class="btn btn-sm bg-danger-light btn-delete">
-                                                <i class="feather-trash"></i>
-                                            </button>
-                                            </form>
+                                           <div class="text-end">
+                                                <a href="#" class="btn btn-sm bg-danger-light"
+                                                    data-bs-toggle="modal" data-bs-target="#edit-modal{{ $x->id }}">
+                                                    <i class="feather-edit"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-sm bg-danger-light"
+                                                    data-bs-toggle="modal" data-bs-target="#delete-modal{{ $x->id }}">
+                                                    <i class="feather-trash"></i>
+                                                </a>
+                                            </div> 
+                                                
                                         </td>
                                     </tr>
                                     <div id="edit-modal{{ $x->id }}" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form action="{{ route('departemen.update',$x->id) }}" method="POST">
+                                                <form action="{{ route('departemen.update', $x->id) }}" method="POST">
                                                     @method('PUT')
                                                     @csrf
                                                     <div class="modal-header">
@@ -112,8 +112,8 @@
                                                                 <div class="mb-3">
                                                                     <label for="field-1" class="form-label">Nama
                                                                         Divisi</label>
-                                                                    <input type="text" class="form-control" name="name"
-                                                                        placeholder="Nama Divisi"
+                                                                    <input type="text" class="form-control"
+                                                                        name="name" placeholder="Nama Divisi"
                                                                         value="{{ $x->name }}" />
                                                                 </div>
                                                             </div>
@@ -128,6 +128,36 @@
                                                             class="btn btn-primary waves-effect waves-light">
                                                             Simpan Perubahan
                                                         </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="delete-modal{{ $x->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                        aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form action="{{ route('departemen.destroy', $x->id) }}" method="post">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <div class="modal-body text-center">
+                                                        <br>
+                                                        <span style="color: #e84646;">
+                                                            <i class="fa fa-exclamation fa-7x"></i>
+                                                          </span>
+                                                        
+                                                        <br><br><br>
+                                                        <h4>Apakah anda yakin menghapus data ini?</h4>
+                                                        <br>
+                                                        <button type="button" class="btn btn-secondary waves-effect"
+                                                            data-bs-dismiss="modal">
+                                                            Tutup
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="btn btn-danger waves-effect waves-light">
+                                                            Ya, Hapus!
+                                                        </button>
+                                                        <br><br>
                                                     </div>
                                                 </form>
                                             </div>
@@ -187,32 +217,5 @@
 
         })
     </script>
-    <script type="text/javascript">
-        $(".btn-delete").click(function(e) {
-            var form = $(this).closest("form");
-            event.preventDefault();
-            Swal.fire({
-                title: "Hapus Data",
-                text: "Anda yakin menghapus data ini?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, Hapus"
-            }).then(function(result) {
-                if (result.value) {
-                    Swal.fire(
-                        "Berhasil!",
-                        "Data berhasil dihapus.",
-                        "success"
-                    )
-                    form.submit();
-                }else{
-                Swal.fire(
-                        "Berhasil!",
-                        "Data berhasil dihapus.",
-                        "error"
-                    )
-                }
-            });
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 @endsection

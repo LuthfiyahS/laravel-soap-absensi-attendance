@@ -36,10 +36,10 @@
         <div class="header">
 
             <div class="header-left">
-                <a href="index.html" class="logo">
+                <a href="/dashboard" class="logo">
                     <img src="{{ asset('theme') }}/assets/img/logo.png" alt="Logo">
                 </a>
-                <a href="index.html" class="logo logo-small">
+                <a href="/dashboard" class="logo logo-small">
                     <img src="{{ asset('theme') }}/assets/img/logo-small.png" alt="Logo" width="30"
                         height="30">
                 </a>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Departemen;
 Use Alert;
 
-class DepartemenController extends Controller
+class JamKerjaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class DepartemenController extends Controller
     public function index()
     {
         $departemen = Departemen::all();
-        return view('admin.departemen.index',compact('departemen'));
+        return view('admin.jam-kerja.index',compact('departemen'));
     }
 
     /**
@@ -84,14 +84,19 @@ class DepartemenController extends Controller
     {
         try {
             $data = [
-                'name'  => $request->name,
+                'jam_masuk'  => $request->jam_masuk,
+                'jam_masuk_mulai'  => $request->jam_masuk_mulai,
+                'jam_masuk_selesai'  => $request->jam_masuk_selesai,
+                'jam_pulang'  => $request->jam_pulang,
+                'jam_pulang_mulai'  => $request->jam_pulang_mulai,
+                'jam_pulang_selesai'  => $request->jam_pulang_selesai,
             ];
             Departemen::where('id',$id)->update($data);
             Alert::success('Sukses', 'Data berhasil diperbaharui!');
-            return redirect('/departemen');
+            return redirect('/jam-kerja');
         } catch (QueryException $e) {
-            Alert::error('Gagal', 'Data tidak berhasil diupdate');
-            return redirect('/departemen');
+            Alert::error('Gagal', 'Data tidak berhasil diperbaharui');
+            return redirect('/jam-kerja');
         }
     }
 
