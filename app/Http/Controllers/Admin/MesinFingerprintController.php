@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MesinFingerprint;
+use App\Models\LogFingerprint;
 Use Alert;
 
 class MesinFingerprintController extends Controller
@@ -127,11 +128,45 @@ class MesinFingerprintController extends Controller
         try {
             $data = MesinFingerprint::find($id);
             $data->delete();
-            Alert::success('Sukses', 'Data berhasil diperbaharui!');
+            Alert::success('Sukses', 'Data berhasil dihapus!');
             return redirect('/mesin-fingerprint');
         } catch (QueryException $e) {
             Alert::error('Gagal', 'Data tidak berhasil dihapus');
             return redirect('/mesin-fingerprint');
         }
+    }
+
+    public function destroylog($id)
+    {
+      $mesin = MesinFingerprint::find($id);
+      $IP = $mesin->ip;
+      $Key = $mesin->comkey;
+      // $port = $mesin->port;
+
+      $connect = @fsockopen($IP, '80', $errno, $errstr, 1);
+      // $connect = @fsockopen($IP, $port, $errno, $errstr, 1);
+      if ($connect) {
+        $data = LogFingerprint::where('mesin_id',$id);
+        $data->delete();
+        $soap_request = "<ClearData>
+        <ArgComKey xsi:type=\"xsd:integer\">".$Key."</ArgComKey>
+        <Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg>
+        </ClearData>";
+
+        $newLine = "\r\n";
+        fputs($connect, "POST /iWsService HTTP/1.0".$newLine);
+        fputs($connect, "Content-Type: text/xml".$newLine);
+        fputs($connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+        fputs($connect, $soap_request.$newLine);
+        $buffer = "";
+        while($Response = fgets($connect, 1024)) {
+            $buffer = $buffer.$Response;
+        }
+        Alert::success('Sukses', 'Log Mesin '.$mesin->name.' Terhapus!');
+        return redirect('/mesin-fingerprint')->with('success','Log Mesin '.$mesin->name.' Terhapus!');
+      } else {
+        Alert::error('Gagal', 'Log Mesin '.$mesin->name.' Tidak Terhapus!');
+        return redirect('/mesin-fingerprint')->with('error','Log Mesin '.$mesin->name.' Tidak Terhapus!');
+      }
     }
 }

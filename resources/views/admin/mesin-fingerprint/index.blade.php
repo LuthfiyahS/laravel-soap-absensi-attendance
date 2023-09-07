@@ -129,7 +129,7 @@
                                                     <i class="feather-edit"></i> Cek Koneksi Mesin Fingerprint
                                                 </a> <br>
                                                 <a href="#" class="badge badge-soft-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#delete-modal{{ $x->id }}">
+                                                    data-bs-toggle="modal" data-bs-target="#deletelog-modal{{ $x->id }}">
                                                     <i class="feather-trash"></i> Hapus Log Mesin Fingerprint
                                                 </a>
                                         </td>
@@ -221,6 +221,36 @@
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <form action="{{ route('mesin-fingerprint.destroy', $x->id) }}" method="post">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <div class="modal-body text-center">
+                                                        <br>
+                                                        <span style="color: #e84646;">
+                                                            <i class="fa fa-exclamation fa-7x"></i>
+                                                          </span>
+                                                        
+                                                        <br><br><br>
+                                                        <h4>Apakah anda yakin menghapus data ini?</h4>
+                                                        <br>
+                                                        <button type="button" class="btn btn-secondary waves-effect"
+                                                            data-bs-dismiss="modal">
+                                                            Tutup
+                                                        </button>
+                                                        <button type="submit"
+                                                            class="btn btn-danger waves-effect waves-light">
+                                                            Ya, Hapus!
+                                                        </button>
+                                                        <br><br>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="deletelog-modal{{ $x->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                        aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form action="{{ route('mesin-fingerprint.destroylog', $x->id) }}" method="post">
                                                     @method('DELETE')
                                                     @csrf
                                                     <div class="modal-body text-center">
