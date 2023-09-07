@@ -37,13 +37,8 @@ class SyncFinger extends Command
         $fp = MesinFingerprint::where('status', 1)->orderBy('ip')->get();
 
         if (count($fp) == 0) {
-            return "tidak ada mesin absensi!";
-        } else {
-            //masuk sync_id
-            SyncFingerprint::create([
-                'datetime' => now(),
-            ]);
-        }
+            return Command::SUCCESS;
+        } 
 
         foreach ($fp as $key => $value) {
             $IP = $value->ip;
@@ -74,7 +69,7 @@ class SyncFinger extends Command
                     $buffer = $buffer . $response;
                 }
             } else {
-                return "Koneksi Gagal";
+                return Command::SUCCESS;
             }
 
             $buffer = $this->_ParseData($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
@@ -99,7 +94,7 @@ class SyncFinger extends Command
                 if ($data != "") {
                     if (!count($this->_checkExists1($pin, $datetime)) > 0 && count($this->_checkExists2($pin)) > 0) {
                         //masuk sync_id
-                        $sync = SyncFingerprint::orderBy('id', 'DESC')->first();
+                        $sync = SyncFingerprint::orderBy('id', 'ASC')->first();
                         $users = User::where('username', $pin)->first();
                         //cek sama jam kerja
                         $schedule = Departemen::find($users->departemen_id);
@@ -130,14 +125,6 @@ class SyncFinger extends Command
                             }
                         }
 
-                        $create[] = [
-                            'user_id' => $users->id,
-                            'datetime' => $datetime,
-                            'mesin_id' => $value->id,
-                            'status' => $status,
-                            'created_at' => $datetime,
-                            'updated_at' => now()
-                        ];
                         $ud = new LogFingerprint;
                         $ud->user_id = $users->id;
                         $ud->datetime = $datetime;
@@ -150,16 +137,27 @@ class SyncFinger extends Command
                     }
                 }
             }
-            echo count($create) . '<br>';
-            //print_r($export);
-            print_r($create);
-
-            echo "bates per mesin<br><br>";
-            // UD::insert($create);
         }
         return Command::SUCCESS;
     }
 
+    public function _ParseData($data, $p1, $p2)
+    {
+      $data = " " . $data;
+      $hasil = "";
+      $awal = strpos($data, $p1);
+      if ($awal != "") {
+        $akhir = strpos(strstr($data, $p1), $p2);
+        if ($akhir != "") {
+          $hasil = substr($data, $awal + strlen($p1), $akhir - strlen($p1));
+        } else {
+          return "akhir kosong";
+        }
+      }
+  
+      return $hasil;
+    }
+    
     //cek antara log mesin sama db
     public function _checkExists1($pin, $datetime)
     {
