@@ -62,7 +62,10 @@ class MesinFingerprintController extends Controller
     public function index()
     {
         $mesinfingerprint = MesinFingerprint::all();
-        return view('admin.mesin-fingerprint.index',compact('mesinfingerprint'));
+        $log = LogFingerprint::count();
+        $sync = SyncFingerprint::count();
+        $syncdate = SyncFingerprint::orderBy('id','DESC')->first();
+        return view('admin.mesin-fingerprint.index',compact('mesinfingerprint','log','sync','syncdate'));
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Absensi extends Model
 {
     use HasFactory;
-    protected $table = 'log_fingerprints';
+    protected $table = 'absensi';
     protected $primaryKey = 'id';
     protected $fillable = ['user_id', 'kehadiran', 'status', 'tanggal','jam_masuk', 'jam_pulang'];
 

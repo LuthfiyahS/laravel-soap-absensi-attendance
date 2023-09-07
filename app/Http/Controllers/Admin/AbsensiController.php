@@ -19,7 +19,8 @@ class AbsensiController extends Controller
     {
         $absensi = Absensi::all();
         $user = User::all();
-        return view('admin.absensi.index',compact('absensi','user'));
+        $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
+        return view('admin.absensi.index',compact('absensi','user','usergroup'));
     }
 
     /**

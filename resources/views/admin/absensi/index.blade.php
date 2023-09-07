@@ -138,135 +138,46 @@
             <div class="col-sm-12">
                 <div class="card card-table">
                     <div class="card-body">
-
-                        <div class="page-header">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h3 class="page-title">Absensi</h3>
-                                </div>
-                                <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-download"></i>
-                                        Download</a>
-                                    <a data-bs-toggle="modal" data-bs-target="#create-modal" class="btn btn-primary"><i
-                                            class="fas fa-plus"></i></a>
-                                </div>
+                        <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                            <li class="nav-item"><a class="nav-link active" href="#bottom-justified-tab1"
+                                    data-bs-toggle="tab">Semua</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#bottom-justified-tab2"
+                                    data-bs-toggle="tab">Per Orang</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#bottom-justified-tab3"
+                                    data-bs-toggle="tab">Per Bulan</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="bottom-justified-tab1">
+                                <table class="datatable table table-stripped" id='data_tbl'>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Nama</th>
+                                            <th>Tanggal</th>
+                                            <th>Jam Masuk</th>
+                                            <th>Jam Keluar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($absensi as $x)
+                                            <tr>
+                                                <td>{{ $loop->iteration}}</td>
+                                                <td>{{ $x->user->name }}</td>
+                                                <td>{{ $x->tanggal }}</td>
+                                                <td>{{ $x->jam_masuk }}</td>
+                                                <td>{{ $x->jam_keluar }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="bottom-justified-tab2">
+                                Tab content 2
+                            </div>
+                            <div class="tab-pane" id="bottom-justified-tab3">
+                                Tab content 3
                             </div>
                         </div>
-
-                        <table class="datatable table table-stripped" id='data_tbl'>
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <div class="form-check check-tables">
-                                            <input class="form-check-input" type="checkbox" value="something">
-                                        </div>
-                                    </th>
-                                    <th>Nama</th>
-                                    <th class="text-end">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($absensi as $x)
-                                    <tr>
-                                        <td>
-                                            <div class="form-check check-tables">
-                                                <input class="form-check-input" type="checkbox" value="something">
-                                            </div>
-                                        </td>
-                                        <td>{{ $x->name }}</td>
-                                        <td>
-                                            <div class="text-end">
-                                                <a href="#" class="btn btn-sm bg-danger-light"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#edit-modal{{ $x->id }}">
-                                                    <i class="feather-edit"></i>
-                                                </a>
-                                                <a href="#" class="btn btn-sm bg-danger-light"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#delete-modal{{ $x->id }}">
-                                                    <i class="feather-trash"></i>
-                                                </a>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                    <div id="edit-modal{{ $x->id }}" class="modal fade" tabindex="-1"
-                                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-                                        style="display: none">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <form action="{{ route('absensi.update', $x->id) }}" method="POST">
-                                                    @method('PUT')
-                                                    @csrf
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">
-                                                            Edit
-                                                        </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body p-4">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="mb-3">
-                                                                    <label for="field-1" class="form-label">Nama
-                                                                        Divisi</label>
-                                                                    <input type="text" class="form-control"
-                                                                        name="name" placeholder="Nama Divisi"
-                                                                        value="{{ $x->name }}" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button"
-                                                            class="btn btn-secondary-light waves-effect"
-                                                            data-bs-dismiss="modal">
-                                                            Tutup
-                                                        </button>
-                                                        <button type="submit"
-                                                            class="btn btn-primary waves-effect waves-light">
-                                                            Simpan Perubahan
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="delete-modal{{ $x->id }}" class="modal fade" tabindex="-1"
-                                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-                                        style="display: none">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <form action="{{ route('absensi.destroy', $x->id) }}" method="post">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <div class="modal-body text-center">
-                                                        <br>
-                                                        <span style="color: #e84646;">
-                                                            <i class="fa fa-exclamation fa-7x"></i>
-                                                        </span>
-
-                                                        <br><br><br>
-                                                        <h4>Apakah anda yakin menghapus data ini?</h4>
-                                                        <br>
-                                                        <button type="button" class="btn btn-secondary waves-effect"
-                                                            data-bs-dismiss="modal">
-                                                            Tutup
-                                                        </button>
-                                                        <button type="submit"
-                                                            class="btn btn-danger waves-effect waves-light">
-                                                            Ya, Hapus!
-                                                        </button>
-                                                        <br><br>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

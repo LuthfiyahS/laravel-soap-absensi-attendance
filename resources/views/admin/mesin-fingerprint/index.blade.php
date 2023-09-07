@@ -27,7 +27,7 @@
                             </span>
                             <div class="inovices-dash-count">
                                 <div class="inovices-amount">
-                                    8X
+                                    {{$sync}}X
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             </span>
                             <div class="inovices-dash-count">
                                 <div class="inovices-amount">
-                                    19 Juli 2023
+                                    {{Carbon\Carbon::create($syncdate->datetime)->isoFormat('D MMMM Y')}}
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                             </span>
                             <div class="inovices-dash-count">
                                 <div class="inovices-amount">
-                                    2,05,545
+                                    {{$log}}
                                 </div>
                             </div>
                         </div>
