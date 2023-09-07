@@ -48,6 +48,7 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::resource('/departemen', DepartemenController::class);
     Route::resource('/pengguna', UserController::class);
     Route::resource('/jam-kerja', JamKerjaController::class);
+    Route::get('/mesin-fingerprint/sinkronisasi', [MesinFingerprintController::class, 'sinkronisasi'])->name('mesin-fingerprint.sinkronisasi');
     Route::resource('/mesin-fingerprint', MesinFingerprintController::class);
     Route::delete('/mesin-fingerprint/deletelog/{id}', [MesinFingerprintController::class, 'destroylog'])->name('mesin-fingerprint.destroylog');
     Route::resource('/absensi', AbsensiController::class);

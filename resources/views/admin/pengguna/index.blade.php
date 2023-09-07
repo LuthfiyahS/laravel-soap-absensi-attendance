@@ -62,6 +62,7 @@
                                 <tr>
                                     <th></th>
                                     <th>Nama</th>
+                                    <th>Kontak</th>
                                     <th>Bagian</th>
                                     <th class="text-end">Action</th>
                                 </tr>
@@ -80,9 +81,12 @@
                                                 
                                             </div>
                                         </td>
-                                        <td><h6>{{ $x->name }}</h6>
-                                            <small>Email : {{$x->email}}</small><br>
-                                            <small>No HP : {{$x->no_hp}}</small>
+                                        <td><h6 style="margin-bottom:0%">{{ $x->name }}</h6>
+                                            <small>{{$x->username}}</small>
+                                        </td>
+                                        <td>
+                                            <p> Email : {{$x->email}} <br>
+                                                No HP : {{$x->no_hp}}</p>
                                         </td>
                                         <td>
                                             @if ($x->departemen_id %2 != 0)
@@ -251,6 +255,15 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="field-1" class="form-label">NIP/NISN/Nomor identitas lainnya</label>
+                                        <input type="text" class="form-control" name="username"
+                                            placeholder="Nomor identitas " />
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-3">

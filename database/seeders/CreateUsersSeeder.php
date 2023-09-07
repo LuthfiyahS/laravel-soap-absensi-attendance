@@ -12,6 +12,7 @@ class CreateUsersSeeder extends Seeder
     {
         $users = [
             [
+               'username'=>'201904024',
                'name'=>'Luthfiyah Sakinah',
                'email'=>'user@gmailabsen.com',
                'type'=>1,
@@ -19,6 +20,7 @@ class CreateUsersSeeder extends Seeder
                'password'=> bcrypt('123456'),
             ],
             [
+               'username'=>'201804001',
                'name'=>'Super Admin',
                'email'=>'super-admin@gmailabsen.com',
                'type'=>2,

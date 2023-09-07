@@ -45,6 +45,7 @@ class UserController extends Controller
     {
         try {
             $data = [
+                'username'  => $request->username,
                 'name'  => $request->name,
                 'email'  => $request->email,
                 'password'  => bcrypt($request->password),

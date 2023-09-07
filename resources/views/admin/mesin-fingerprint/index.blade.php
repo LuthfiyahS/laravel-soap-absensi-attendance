@@ -91,7 +91,7 @@
                                     <h3 class="page-title">Mesin Fingerprint</h3>
                                 </div>
                                 <div class="col-auto text-end float-end ms-auto download-grp">
-                                    <a href="#" class="btn btn-outline-primary me-2"><i class="fas fa-sync"></i>
+                                    <a href="{{route('mesin-fingerprint.sinkronisasi')}}" class="btn btn-outline-primary me-2"><i class="fas fa-sync"></i>
                                         Sinkronisasi</a>
                                     <a data-bs-toggle="modal" data-bs-target="#create-modal" class="btn btn-primary"><i
                                             class="fas fa-plus"></i></a>
