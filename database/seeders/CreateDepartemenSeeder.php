@@ -18,12 +18,30 @@ class CreateDepartemenSeeder extends Seeder
         $departemens = [
             [
                 'name'=>'Staf',
+                'jam_masuk' => '08:00:00',
+                'jam_masuk_mulai' => '06:00:00',
+                'jam_masuk_selesai' => '12:00:00',
+                'jam_pulang' => '17:00:00',
+                'jam_pulang_mulai' => '15:00:00',
+                'jam_pulang_selesai' => '23:00:00',
             ],
             [
                 'name'=>'Guru',
+                'jam_masuk' => '08:00:00',
+                'jam_masuk_mulai' => '06:00:00',
+                'jam_masuk_selesai' => '12:00:00',
+                'jam_pulang' => '17:00:00',
+                'jam_pulang_mulai' => '15:00:00',
+                'jam_pulang_selesai' => '18:00:00',
             ],
             [
                 'name'=>'Siswa',
+                'jam_masuk' => '08:00:00',
+                'jam_masuk_mulai' => '06:00:00',
+                'jam_masuk_selesai' => '10:00:00',
+                'jam_pulang' => '17:00:00',
+                'jam_pulang_mulai' => '15:00:00',
+                'jam_pulang_selesai' => '18:00:00',
             ],
         ];
     

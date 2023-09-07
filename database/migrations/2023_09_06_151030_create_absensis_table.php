@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->nullable();
-            $table->integer('kehadiran')->nullable();//izin, hadir
-            $table->integer('status')->nullable();//tepat waktu atau terlambat
+            $table->enum('kehadiran',['Tidak Hadir','Hadir'])->nullable();//izin, hadir
+            $table->enum('status',['Tepat Waktu','Terlambat'])->nullable();//tepat waktu atau terlambat
             $table->date('tanggal')->nullable();
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();

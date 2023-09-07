@@ -165,7 +165,7 @@
                                                 <td>{{ $x->user->name }}</td>
                                                 <td>{{ $x->tanggal }}</td>
                                                 <td>{{ $x->jam_masuk }}</td>
-                                                <td>{{ $x->jam_keluar }}</td>
+                                                <td>{{ $x->jam_pulang }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
