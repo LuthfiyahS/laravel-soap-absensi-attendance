@@ -16,11 +16,16 @@ class AbsensiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $absensi = Absensi::all();
         $user = User::all();
         $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
+        if ($request->ajax()) {
+            $data = Absensi::with('user')->latest()->get();
+            return DataTables::of($data)
+                ->make();
+        }
         return view('admin.absensi.index',compact('absensi','user','usergroup'));
     }
     public function getAbsensi(Request $request)

@@ -35,9 +35,9 @@
                                             </p>
                                             <div class="form-custom">
                                                 <input type="text" class="form-control bg-grey"
-                                                    placeholder="Enter Customer Name" />
+                                                    placeholder="Enter Customer Name" list="brow" />
                                             </div>
-                                            <div class="selectBox-cont">
+                                            <div class="selectBox-cont" id="brow">
                                                 @foreach ($user as $x)
                                                     <label class="custom_check w-100">
                                                         <input type="checkbox" name="username" />
@@ -45,16 +45,6 @@
                                                         {{ $x->name }}
                                                     </label>
                                                 @endforeach
-                                                <label class="custom_check w-100">
-                                                    <input type="checkbox" name="username" />
-                                                    <span class="checkmark"></span>
-                                                    Brian Johnson
-                                                </label>
-                                                <label class="custom_check w-100">
-                                                    <input type="checkbox" name="username" />
-                                                    <span class="checkmark"></span>
-                                                    Russell Copeland
-                                                </label>
                                             </div>
                                             <button type="submit" class="btn w-100 btn-primary">
                                                 Apply
@@ -180,18 +170,14 @@
     <script>
         $(document).ready(function() {
             var table = $('#data_tbl').DataTable({
-              processing: true,
+              
               serverSide: true,
               ajax: '{{ url()->current() }}',
               columns: [
-                  {data: 'user_id', name: 'user_id'},
+                  {data: 'user.name', name: 'user.name'},
                   {data: 'tanggal', name: 'tanggal'},
                   {data: 'jam_masuk', name: 'jam_masuk'},
                   {data: 'jam_pulang', name: 'jam_pulang'},
-                  {
-                      orderable: true, 
-                      searchable: true
-                  },
               ]
           });
 
