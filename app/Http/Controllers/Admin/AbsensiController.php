@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 use App\Models\User;
+use DataTables;
 Use Alert;
 
 class AbsensiController extends Controller
@@ -21,6 +22,14 @@ class AbsensiController extends Controller
         $user = User::all();
         $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
         return view('admin.absensi.index',compact('absensi','user','usergroup'));
+    }
+    public function getAbsensi(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Absensi::latest()->get();
+            return DataTables::of($data)
+                ->make();
+        }
     }
 
     /**

@@ -148,10 +148,9 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane show active" id="bottom-justified-tab1">
-                                <table class="datatable table table-stripped" id='data_tbl'>
+                                <table class="table table-stripped" id='data_tbl'>
                                     <thead>
                                         <tr>
-                                            <th></th>
                                             <th>Nama</th>
                                             <th>Tanggal</th>
                                             <th>Jam Masuk</th>
@@ -159,15 +158,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($absensi as $x)
-                                            <tr>
-                                                <td>{{ $loop->iteration}}</td>
-                                                <td>{{ $x->user->name }}</td>
-                                                <td>{{ $x->tanggal }}</td>
-                                                <td>{{ $x->jam_masuk }}</td>
-                                                <td>{{ $x->jam_pulang }}</td>
-                                            </tr>
-                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -183,13 +173,29 @@
             </div>
         </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <link  href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#data_tbl").DataTable({
-                search: true,
-            })
+            var table = $('#data_tbl').DataTable({
+              processing: true,
+              serverSide: true,
+              ajax: '{{ url()->current() }}',
+              columns: [
+                  {data: 'user_id', name: 'user_id'},
+                  {data: 'tanggal', name: 'tanggal'},
+                  {data: 'jam_masuk', name: 'jam_masuk'},
+                  {data: 'jam_pulang', name: 'jam_pulang'},
+                  {
+                      orderable: true, 
+                      searchable: true
+                  },
+              ]
+          });
 
         })
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+      
 @endsection
