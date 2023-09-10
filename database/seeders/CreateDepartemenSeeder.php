@@ -20,10 +20,10 @@ class CreateDepartemenSeeder extends Seeder
                 'name'=>'Staf',
                 'jam_masuk' => '08:00:00',
                 'jam_masuk_mulai' => '06:00:00',
-                'jam_masuk_selesai' => '12:00:00',
+                'jam_masuk_selesai' => '09:00:00',
                 'jam_pulang' => '17:00:00',
-                'jam_pulang_mulai' => '15:00:00',
-                'jam_pulang_selesai' => '23:00:00',
+                'jam_pulang_mulai' => '13:00:00',
+                'jam_pulang_selesai' => '18:00:00',
             ],
             [
                 'name'=>'Guru',
