@@ -18,23 +18,151 @@ class AbsensiController extends Controller
      */
     public function index(Request $request)
     {
+        if(isset($_GET['user_id']))
+        {
+            $name = $_GET['user_id'];
+        }else {
+            $name = null;
+        }
+
+        if(isset($_GET['tgl_awal']))
+        {
+            $tgl_awal = $_GET['tgl_awal'];
+        }else {
+            $tgl_awal = null;
+        }
+
+        if(isset($_GET['tgl_akhir']))
+        {
+            $tgl_akhir = $_GET['tgl_akhir'];
+        }else {
+            $tgl_akhir = null;
+        }
+        //echo $tgl_akhir;
         $absensi = Absensi::all();
         $user = User::all();
         $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
         if ($request->ajax()) {
-            $data = Absensi::with('user')->latest()->get();
+            if(isset($_GET['user_id']))
+            {
+                $name = $_GET['user_id'];
+            }else {
+                $name = null;
+            }
+
+            if(isset($_GET['tgl_awal']))
+            {
+                $tgl_awal = $_GET['tgl_awal'];
+            }else {
+                $tgl_awal = null;
+            }
+
+            if(isset($_GET['tgl_akhir']))
+            {
+                $tgl_akhir = $_GET['tgl_akhir'];
+            }else {
+                $tgl_akhir = null;
+            }
+            
+            if ($name != null && $tgl_awal  != null && $tgl_akhir != null) {
+                $data = Absensi::with('user')->where('user_id',$name)->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
+            } else if($name != null) {
+                $data = Absensi::with('user')->where('user_id',$name)->latest()->get();
+            } else if($tgl_awal  != null && $tgl_akhir != null) {
+                $data = Absensi::with('user')->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
+            } else {
+                $data = Absensi::with('user')->latest()->get();
+            }
             return DataTables::of($data)
+                ->addIndexColumn()
                 ->make();
         }
-        return view('admin.absensi.index',compact('absensi','user','usergroup'));
+        return view('admin.absensi.index',compact('absensi','user','usergroup','name','tgl_awal','tgl_akhir'));
     }
-    public function getAbsensi(Request $request)
+    public function getAbsensiData(Request $request)
+    {
+        if(isset($_GET['user_id']))
+        {
+            $name = $_GET['user_id'];
+        }else {
+            $name = null;
+        }
+
+        if(isset($_GET['tgl_awal']))
+        {
+            $tgl_awal = $_GET['tgl_awal'];
+        }else {
+            $tgl_awal = null;
+        }
+
+        if(isset($_GET['tgl_akhir']))
+        {
+            $tgl_akhir = $_GET['tgl_akhir'];
+        }else {
+            $tgl_akhir = null;
+        }
+        $absensi = Absensi::all();
+        $user = User::all();
+        $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
+        if ($request->ajax()) {
+            if ($name != null && $tgl_awal  != null && $tgl_akhir != null) {
+                $data = Absensi::with('user')->where('user_id',$request->user_id)->where('tanggal','>=',$request->tgl_awal)->where('tanggal','<=',$request->tgl_akhir)->latest()->get();
+            } else if($name != null) {
+                $data = Absensi::with('user')->where('user_id',$request->user_id)->latest()->get();
+            } else if($tgl_awal  != null && $tgl_akhir != null) {
+                $data = Absensi::with('user')->where('tanggal','>=',$request->tgl_awal)->where('tanggal','<=',$request->tgl_akhir)->latest()->get();
+            } else {
+                $data = Absensi::with('user')->latest()->get();
+            }
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->make();
+        }
+        return view('admin.absensi.index',compact('absensi','user','usergroup','name','tgl_awal','tgl_akhir'));
+        
+    }
+
+    public function getAbsensiUser(Request $request,$user_id)
     {
         if ($request->ajax()) {
-            $data = Absensi::latest()->get();
+                
+            $data = Absensi::with('user')->where('user_id',$user_id)->latest()->get();
             return DataTables::of($data)
+                ->addIndexColumn()
                 ->make();
+        
+        // return response()->json($data);
         }
+    }
+
+    public function getAbsensiTgl(Request $request,$tgl_awal,$tgl_akhir)
+    {
+        if ($request->ajax()) {
+                
+            $data = Absensi::with('user')->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->make();
+        
+        // return response()->json($data);
+        }
+    }
+
+    public function getAbsensi(Request $request,$keyword)
+    {
+        // if ($request->ajax()) {
+        //     $data = Absensi::latest()->get();
+        //     return DataTables::of($data)
+        //         ->make();
+        // }
+        if ($keyword != " " || $keyword != "") {
+            $data = User::where('name','LIKE','%'.$keyword.'%')->get();
+        }else{
+            $data = User::all();
+        }
+        
+        //dd($data);
+        return response()->json($data);
     }
 
     /**
@@ -55,17 +183,23 @@ class AbsensiController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $data = [
-                'name'  => $request->name,
-            ];
-            Absensi::create($data);
-            Alert::success('Sukses', 'Data berhasil ditambahkan!');
-            return redirect('/absensi');
-        } catch (QueryException $e) {
-            Alert::error('Gagal', 'Data tidak berhasil ditambahkan!');
-            return redirect('/absensi');
+        $name = $request->user_id;
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+        $absensi = Absensi::all();
+        $user = User::all();
+        $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
+        if ($request->ajax()) {
+            // $data['semua'] = Absensi::with('user')->latest()->get();
+            // $data['user'] = Absensi::select('user.*')->join('user','user.id','absensi.user_id')->groupBy('absensi.user_id')->get();
+            $data = Absensi::with('user')->where('user_id',$request->user_id)->where('tanggal','>=',$request->tgl_awal)->where('tanggal','<=',$request->tgl_akhir)->latest()->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->make();
         }
+        return view('admin.absensi.index',compact('absensi','user','usergroup','name','tgl_awal','tgl_akhir'));
+        
+        
     }
 
     /**
