@@ -266,7 +266,9 @@ class MesinFingerprintController extends Controller
           $buffer = $buffer . $response;
         }
       } else {
-        return "Koneksi Gagal";
+        Alert::error('Gagal', 'Koneksi Gagal !');
+        return redirect()->back();
+        //return "Koneksi Gagal";
       }
 
       $buffer = $this->_ParseData($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");

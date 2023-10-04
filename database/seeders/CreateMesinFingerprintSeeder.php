@@ -18,7 +18,13 @@ class CreateMesinFingerprintSeeder extends Seeder
         $mesinfingerprint = [
             [
                 'ip' => '192.168.1.201',
-                'name' => 'Fingerprint Al Muhajirin',
+                'name' => 'Fingerprint',
+                'comkey' => '1',
+                'status' => 1,
+            ],
+            [
+                'ip' => '103.186.31.208',
+                'name' => 'Fingerprint 2',
                 'comkey' => '1',
                 'status' => 1,
             ],

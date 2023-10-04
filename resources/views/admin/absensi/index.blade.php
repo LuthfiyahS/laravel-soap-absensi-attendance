@@ -18,12 +18,11 @@
             <div class="card-body pb-0">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="{{route('absensi.index')}}" method="GET">
+                        <form action="{{route('absensi.generate')}}" method="POST">
                             @csrf
                         <ul class="app-listing">
-
-                            <li style="width: 40%;">
-                                <div>
+                            <li style="width: 25%;">
+                                <div class="form-group">
                                     <select name="user_id" id="select-field" class="form-control" >
                                         <option value="" disabled selected>Pilih User</option>
                                         @foreach ($user as $x)
@@ -32,17 +31,19 @@
                                     </select>
                                 </div>
                             </li>
-                            <li style="width: 40%;">
-                                <div class="date-picker">
+                            <li style="width: 25%;">
+                                <div class="form-group">
                                     <div class="form-custom cal-icon">
                                         <input class="form-control" type="date"
-                                            placeholder="Form" name="tgl_awal" @if ($tgl_awal !=null) value="{{$tgl_awal}}" @endif />
+                                            placeholder="Form" name="from" @if ($tgl_awal !=null) value="{{$tgl_awal}}" @endif />
                                     </div>
                                 </div>
-                                <div class="date-picker">
+                            </li>
+                            <li style="width: 25%;">
+                                <div class="form-group">
                                     <div class="form-custom cal-icon">
                                         <input class="form-control" type="date"
-                                            placeholder="To" name="tgl_akhir" @if ($tgl_akhir !=null) value="{{$tgl_akhir}}" @endif  />
+                                            placeholder="To" name="to" @if ($tgl_akhir !=null) value="{{$tgl_akhir}}" @endif  />
                                     </div>
                                 </div>
                             </li>

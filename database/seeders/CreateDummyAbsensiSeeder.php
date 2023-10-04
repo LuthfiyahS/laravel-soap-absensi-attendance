@@ -19,13 +19,21 @@ class CreateDummyAbsensiSeeder extends Seeder
         
         $faker = Faker::create('id_ID');
         
-        for ($i=0; $i < 50 ; $i++) { 
+        for ($i=0; $i < 100 ; $i++) { 
+            $jam = $faker->dateTimeBetween('06.00.00', '09.09.00');
+            if ($jam <= '08.00.00') {
+                $status = "Tepat Waktu";
+            } else {
+                $status = "Terlambat";
+            }
+            
             Absensi::create([
                 'user_id' => $faker->numberBetween(1,52),
                 'kehadiran' => $faker->randomElement(['Tidak Hadir','Hadir']),
-                'tanggal' => $faker->date,
-                'jam_masuk' => $faker->time,
-                'jam_pulang' => $faker->time,
+                'tanggal' => $faker->dateTimeBetween('01.08.2023', '01.09.2023'),
+                'status' => $status,
+                'jam_masuk' => $jam,
+                'jam_pulang' => $faker->dateTimeBetween('15.00.00', '18.09.00'),
             ]);
         } 
         

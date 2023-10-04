@@ -52,6 +52,7 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::resource('/mesin-fingerprint', MesinFingerprintController::class);
     Route::delete('/mesin-fingerprint/deletelog/{id}', [MesinFingerprintController::class, 'destroylog'])->name('mesin-fingerprint.destroylog');
     Route::resource('/absensi', AbsensiController::class);
+    Route::post('/absensi/generate', [AbsensiController::class, 'generateReport'])->name('absensi.generate');
     Route::get('/absensi/list/{keyword}', [AbsensiController::class, 'getAbsensi'])->name('absensi.list');
     Route::get('/api/absensi', [AbsensiController::class, 'getAbsensiData'])->name('absensi.data');
     Route::get('/api/absensi/user/{user_id}', [AbsensiController::class, 'getAbsensiUser'])->name('absensi.user');

@@ -8,6 +8,8 @@ use App\Models\Absensi;
 use App\Models\User;
 use DataTables;
 Use Alert;
+use PDF;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -79,6 +81,7 @@ class AbsensiController extends Controller
         }
         return view('admin.absensi.index',compact('absensi','user','usergroup','name','tgl_awal','tgl_akhir'));
     }
+
     public function getAbsensiData(Request $request)
     {
         if(isset($_GET['user_id']))
@@ -263,5 +266,19 @@ class AbsensiController extends Controller
             Alert::error('Gagal', 'Data tidak berhasil dihapus');
             return redirect('/absensi');
         }
+    }
+
+    public function generateReport(Request $request){
+        $data = [
+            'absen' => Absensi::where('user_id', $request->user_id)->whereBetween(DB::raw('DATE(tanggal)'), array($request->from, $request->to))->get(),
+            'user' => User::find($request->user_id),
+            'from' => $request->from,
+            'to' => $request->to,
+        ];
+        //echo $request->from;
+        $user = User::find($request->user_id);
+        $pdf = PDF::loadView('admin.absensi.report', $data);
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->stream('Laporan Presensi  ' . $user->name .'.pdf');
     }
 }
