@@ -98,24 +98,15 @@ class SyncFinger extends Command
                         $users = User::where('username', $pin)->first();
                         //cek sama jam kerja
                         $schedule = Departemen::find($users->departemen_id);
-                        if ($time >= $schedule->jam_masuk_mulai && $time <= $schedule->jam_masuk) {
+                        if ($time >= $schedule->jam_masuk_mulai && $time <= $schedule->jam_masuk_selesai) {
                             # code...
                             Absensi::create([
                                 'user_id' => $users->id,
                                 'kehadiran' => 'Hadir',
-                                'status' => 'Tepat Waktu',
                                 'tanggal' => $datetime,
                                 'jam_masuk' => $datetime,
                             ]);
-                        } elseif ($time >= $schedule->jam_masuk && $time <= $schedule->jam_pulang_mulai) {
-                            Absensi::create([
-                                'user_id' => $users->id,
-                                'kehadiran' => 'Hadir',
-                                'status' => 'Terlambat',
-                                'tanggal' => $datetime,
-                                'jam_masuk' => $datetime,
-                            ]);
-                        }elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
+                        } elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
                             # code...
                             //dd($schedule->jam_pulang_mulai);
                             $cek = Absensi::where('user_id', $users->id)->where('tanggal', $date)->first();

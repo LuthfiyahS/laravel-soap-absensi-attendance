@@ -305,6 +305,14 @@ class MesinFingerprintController extends Controller
                 'tanggal' => $datetime,
                 'jam_masuk' => $datetime,
               ]);
+            } elseif ($time >= $schedule->jam_masuk && $time <= $schedule->jam_pulang_mulai) {
+              Absensi::create([
+                  'user_id' => $users->id,
+                  'kehadiran' => 'Hadir',
+                  'status' => 'Terlambat',
+                  'tanggal' => $datetime,
+                  'jam_masuk' => $datetime,
+              ]);
             }elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
               # code...
               //dd($schedule->jam_pulang_mulai);

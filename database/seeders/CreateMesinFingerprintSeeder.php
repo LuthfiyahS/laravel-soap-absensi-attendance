@@ -19,13 +19,19 @@ class CreateMesinFingerprintSeeder extends Seeder
             [
                 'ip' => '192.168.1.201',
                 'name' => 'Fingerprint',
-                'comkey' => '1',
+                'comkey' => '3',
                 'status' => 1,
             ],
             [
                 'ip' => '103.186.31.208',
                 'name' => 'Fingerprint 2',
                 'comkey' => '1',
+                'status' => 1,
+            ],
+            [
+                'ip' => '103.186.31.203',
+                'name' => 'Fingerprint 2',
+                'comkey' => '0',
                 'status' => 1,
             ],
         ];

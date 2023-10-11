@@ -269,16 +269,22 @@ class AbsensiController extends Controller
     }
 
     public function generateReport(Request $request){
+        $startDate = date("Y-m-d", strtotime($request->from));
+        $endDate   = date("Y-m-d", strtotime($request->to));
+
+        //echo $startDate;
+        $query = Absensi::where('user_id', $request->user_id)->whereBetween("tanggal", array($startDate, $endDate))->get();
         $data = [
-            'absen' => Absensi::where('user_id', $request->user_id)->whereBetween(DB::raw('DATE(tanggal)'), array($request->from, $request->to))->get(),
+            'absen' => Absensi::where('user_id', $request->user_id)->whereBetween("tanggal", array($startDate, $endDate))->get(),
             'user' => User::find($request->user_id),
             'from' => $request->from,
             'to' => $request->to,
         ];
+        
         //echo $request->from;
         $user = User::find($request->user_id);
         $pdf = PDF::loadView('admin.absensi.report', $data);
-        $pdf->setPaper('A4', 'landscape');
+        //$pdf->setPaper('A4', 'landscape');
         return $pdf->stream('Laporan Presensi  ' . $user->name .'.pdf');
     }
 }
