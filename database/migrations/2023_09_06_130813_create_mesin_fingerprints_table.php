@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('ip');
             $table->string('name')->nullable();
             $table->string('comkey');
+            $table->string('port');
             $table->integer('status');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

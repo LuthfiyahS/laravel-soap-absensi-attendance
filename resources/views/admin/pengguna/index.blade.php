@@ -334,7 +334,7 @@
     <script>
         $(document).ready(function() {
             $("#data_tbl").DataTable({
-                search: true,
+                searching: true,
             })
 
         })

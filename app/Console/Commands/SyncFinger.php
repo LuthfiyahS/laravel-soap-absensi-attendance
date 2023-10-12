@@ -79,6 +79,7 @@ class SyncFinger extends Command
             for ($a = 1; $a < count($buffer); $a++) {
                 $data      = $this->_ParseData($buffer[$a], "<Row>", "</Row>");
                 $pin       = $this->_ParseData($data, "<PIN>", "</PIN>");
+                $name       = $this->_ParseData($data, "<Name>", "</Name>");
                 $datetime  = $this->_ParseData($data, "<DateTime>", "</DateTime>");
                 $status  = $this->_ParseData($data, "<Status>", "</Status>");
 
@@ -92,16 +93,17 @@ class SyncFinger extends Command
                 $date = $datetimes->format('Y-m-d');
                 $time = $datetimes->format('H:i:s');
                 if ($data != "") {
-                    if (!count($this->_checkExists1($pin, $datetime)) > 0 && count($this->_checkExists2($pin)) > 0) {
+                    if (!count($this->_checkExists1($name, $datetime))  > 0) {
                         //masuk sync_id
                         $sync = SyncFingerprint::orderBy('id', 'ASC')->first();
-                        $users = User::where('username', $pin)->first();
+                        $users = User::where('name', $name)->first();
                         //cek sama jam kerja
-                        $schedule = Departemen::find($users->departemen_id);
+                        //$schedule = Departemen::find($users->departemen_id);
+                        $schedule = Departemen::find(1);
                         if ($time >= $schedule->jam_masuk_mulai && $time <= $schedule->jam_masuk) {
                             # code...
                             Absensi::create([
-                                'user_id' => $users->id,
+                                'name' => $name,
                                 'kehadiran' => 'Hadir',
                                 'status' => 'Tepat Waktu',
                                 'tanggal' => $datetime,
@@ -109,7 +111,7 @@ class SyncFinger extends Command
                             ]);
                         } elseif ($time >= $schedule->jam_masuk && $time <= $schedule->jam_pulang_mulai) {
                             Absensi::create([
-                                'user_id' => $users->id,
+                                'name' => $name,
                                 'kehadiran' => 'Hadir',
                                 'status' => 'Terlambat',
                                 'tanggal' => $datetime,
@@ -118,7 +120,7 @@ class SyncFinger extends Command
                         }elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
                             # code...
                             //dd($schedule->jam_pulang_mulai);
-                            $cek = Absensi::where('user_id', $users->id)->where('tanggal', $date)->first();
+                            $cek = Absensi::where('name', $name)->where('tanggal', $date)->first();
                             if ($cek) {
                                 // dd($cek);
                                 $upd = Absensi::where('id', $cek->id)->update([
@@ -127,7 +129,7 @@ class SyncFinger extends Command
                             } else {
                                 //dd($cek);
                                 Absensi::create([
-                                    'user_id' => $users->id,
+                                    'name' => $name,
                                     'tanggal' => $date,
                                     'jam_masuk' => $time,
                                 ]);
@@ -135,7 +137,7 @@ class SyncFinger extends Command
                         }
 
                         $ud = new LogFingerprint;
-                        $ud->user_id = $users->id;
+                        $ud->name = $name;
                         $ud->datetime = $datetime;
                         $ud->mesin_id = $value->id;
                         $ud->status = $status;
@@ -168,22 +170,9 @@ class SyncFinger extends Command
     }
     
     //cek antara log mesin sama db
-    public function _checkExists1($pin, $datetime)
+    public function _checkExists1($name, $datetime)
     {
-        $users = User::where('username', $pin)->first();
-        if ($users) {
-            $userData = LogFingerprint::where('user_id', $users->id)->where('datetime', $datetime)->get();
-            return $userData;
-        } else {
-            $userData = [];
-            return $userData;
-        }
-    }
-
-    //cek usernya cocok ga sama mesin
-    public function _checkExists2($pin)
-    {
-        $users = User::where('username', $pin)->get();
-        return $users;
+        $userData = LogFingerprint::where('name', $name)->where('datetime', $datetime)->get();
+        return $userData;
     }
 }

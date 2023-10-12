@@ -43,7 +43,7 @@ class AbsensiController extends Controller
         //echo $tgl_akhir;
         $absensi = Absensi::all();
         $user = User::all();
-        $usergroup = Absensi::select('user_id')->groupBy('user_id')->get();
+        $usergroup = Absensi::select('name')->groupBy('name')->get();
         if ($request->ajax()) {
             if(isset($_GET['user_id']))
             {
@@ -67,9 +67,9 @@ class AbsensiController extends Controller
             }
             
             if ($name != null && $tgl_awal  != null && $tgl_akhir != null) {
-                $data = Absensi::with('user')->where('user_id',$name)->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
+                $data = Absensi::with('user')->where('name',$name)->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
             } else if($name != null) {
-                $data = Absensi::with('user')->where('user_id',$name)->latest()->get();
+                $data = Absensi::with('user')->where('name',$name)->latest()->get();
             } else if($tgl_awal  != null && $tgl_akhir != null) {
                 $data = Absensi::with('user')->where('tanggal','>=',$tgl_awal)->where('tanggal','<=',$tgl_akhir)->latest()->get();
             } else {

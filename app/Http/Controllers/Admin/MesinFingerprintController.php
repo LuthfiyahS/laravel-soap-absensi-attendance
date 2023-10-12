@@ -82,10 +82,10 @@ class MesinFingerprintController extends Controller
   {
     $mesin = MesinFingerprint::find($id);
     $IP = $mesin->ip;
-    // $port = $mesin->port;
+    $port = $mesin->port;
 
-    $connect = @fsockopen($IP, '80', $errno, $errstr, 1);
-    // $connect = @fsockopen($IP, $port, $errno, $errstr, 1);
+    //$connect = @fsockopen($IP, '80', $errno, $errstr, 1);
+    $connect = @fsockopen($IP, $port, $errno, $errstr, 1);
     if ($connect) {
       Alert::success('Success', 'Mesin Terkoneksi');
       //toast('Mesin '.$mesin->name.' Terkoneksi!','success');
@@ -205,16 +205,10 @@ class MesinFingerprintController extends Controller
   }
 
   //cek antara log mesin sama db
-  public function _checkExists1($pin, $datetime)
+  public function _checkExists1($name, $datetime)
   {
-    $users = User::where('username', $pin)->first();
-    if ($users) {
-      $userData = LogFingerprint::where('user_id', $users->id)->where('datetime', $datetime)->get();
-      return $userData;
-    } else {
-      $userData = [];
-      return $userData;
-    }
+    $userData = LogFingerprint::where('name', $name)->where('datetime', $datetime)->get();
+    return $userData;
   }
 
   //cek usernya cocok ga sama mesin
@@ -229,6 +223,7 @@ class MesinFingerprintController extends Controller
     $fp = MesinFingerprint::where('status', 1)->orderBy('ip')->get();
 
     if (count($fp) == 0) {
+      Alert::error('Error', 'tidak ada mesin absensi!');
       return "tidak ada mesin absensi!";
     } else {
       //masuk sync_id
@@ -240,7 +235,7 @@ class MesinFingerprintController extends Controller
     foreach ($fp as $key => $value) {
       $IP = $value->ip;
       $Key = $value->comkey;
-      // $Port = $value->port;
+      $Port = $value->port;
 
       if ($IP == "") {
         $IP = $value->ip;
@@ -252,32 +247,38 @@ class MesinFingerprintController extends Controller
       //   $Key = $value->port;
       // }
 
-      $connect = @fsockopen($IP, '80', $errno, $errstr, 1);
-      // $connect = @fsockopen($IP, $Port, $errno, $errstr, 1);
-      if ($connect) {
-        $soapRequest = "<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">" . $Key . "</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
+      //$connect = @fsockopen($IP, '80', $errno, $errstr, 1);
+      $connect = @fsockopen($IP, $Port, $errno, $errstr, 1);
+      if($connect) {
+        $soapRequest = "<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
         $newLine = "\r\n";
-        fputs($connect, "POST /iWsService HTTP/1.0" . $newLine);
-        fputs($connect, "Content-Type: text/xml" . $newLine);
-        fputs($connect, "Content-Length: " . strlen($soapRequest) . $newLine . $newLine);
-        fputs($connect, $soapRequest . $newLine);
+        fputs($connect, "POST /iWsService HTTP/1.0".$newLine);
+        fputs($connect, "Content-Type: text/xml".$newLine);
+        fputs($connect, "Content-Length: ".strlen($soapRequest).$newLine.$newLine);
+        fputs($connect, $soapRequest.$newLine);
         $buffer = "";
         while ($response = fgets($connect, 1024)) {
-          $buffer = $buffer . $response;
+          $buffer = $buffer.$response;
         }
-      } else {
-        Alert::error('Gagal', 'Koneksi Gagal !');
-        return redirect()->back();
-        //return "Koneksi Gagal";
+        ////echo "Koneksi sukesu ip" . $IP;
+      } 
+      else {
+        // Alert::error('Gagal', 'Koneksi Gagal !');
+        // return redirect()->back();
+        return "Koneksi Gagal untuk ip" . $IP ;
       }
 
+      //dd($buffer);
       $buffer = $this->_ParseData($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
       $buffer = explode("\r\n", $buffer);
-
+      echo 'Total data'. count($buffer). '<br>';
       $create = [];
       for ($a = 1; $a < count($buffer); $a++) {
+        
         $data      = $this->_ParseData($buffer[$a], "<Row>", "</Row>");
-        $pin       = $this->_ParseData($data, "<PIN>", "</PIN>");
+        //$pin       = $this->_ParseData($data, "<PIN>", "</PIN>");
+        $name       = $this->_ParseData($data, "<PIN>", "</PIN>");
+
         $datetime  = $this->_ParseData($data, "<DateTime>", "</DateTime>");
         $status  = $this->_ParseData($data, "<Status>", "</Status>");
 
@@ -290,75 +291,79 @@ class MesinFingerprintController extends Controller
 
         $date = $datetimes->format('Y-m-d');
         $time = $datetimes->format('H:i:s');
+        echo 'kesini ga'.$a;
         if ($data != "") {
-          if (!count($this->_checkExists1($pin, $datetime)) > 0 && count($this->_checkExists2($pin)) > 0) {
-            //masuk sync_id
-            $sync = SyncFingerprint::orderBy('id', 'DESC')->first();
-            $users = User::where('username', $pin)->first();
-            //cek sama jam kerja
-            $schedule = Departemen::find($users->departemen_id);
-            if ($time >= $schedule->jam_masuk_mulai && $time <= $schedule->jam_masuk_selesai) {
-              # code...
-              Absensi::create([
-                'user_id' => $users->id,
-                'kehadiran' => 'Hadir',
-                'tanggal' => $datetime,
-                'jam_masuk' => $datetime,
-              ]);
-            } elseif ($time >= $schedule->jam_masuk && $time <= $schedule->jam_pulang_mulai) {
-              Absensi::create([
-                  'user_id' => $users->id,
-                  'kehadiran' => 'Hadir',
-                  'status' => 'Terlambat',
-                  'tanggal' => $datetime,
-                  'jam_masuk' => $datetime,
-              ]);
-            }elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
-              # code...
-              //dd($schedule->jam_pulang_mulai);
-              $cek = Absensi::where('user_id', $users->id)->where('tanggal', $date)->first();
-              if ($cek) {
-               // dd($cek);
-                $upd= Absensi::where('id',$cek->id)->update([
-                  'jam_pulang' => $time,
-                ]);
-              }else{
-                //dd($cek);
-                Absensi::create([
-                  'user_id' => $users->id,
-                  'tanggal' => $date,
-                  'jam_masuk' => $time,
-                ]);
+          if (!count($this->_checkExists1($name, $datetime))  > 0) {
+              //masuk sync_id
+              $sync = SyncFingerprint::orderBy('id', 'ASC')->first();
+              $users = User::where('name', $name)->first();
+              //cek sama jam kerja
+              //$schedule = Departemen::find($users->departemen_id);
+              $schedule = Departemen::find(1);
+              if ($time >= $schedule->jam_masuk_mulai && $time <= $schedule->jam_masuk) {
+                  # code...
+                  Absensi::create([
+                      'name' => $name,
+                      'kehadiran' => 'Hadir',
+                      'status' => 'Tepat Waktu',
+                      'tanggal' => $datetime,
+                      'jam_masuk' => $datetime,
+                  ]);
+              } elseif ($time >= $schedule->jam_masuk && $time <= $schedule->jam_pulang_mulai) {
+                  Absensi::create([
+                      'name' => $name,
+                      'kehadiran' => 'Hadir',
+                      'status' => 'Terlambat',
+                      'tanggal' => $datetime,
+                      'jam_masuk' => $datetime,
+                  ]);
+              }elseif ($time >= $schedule->jam_pulang_mulai && $time <= $schedule->jam_pulang_selesai) {
+                  # code...
+                  //dd($schedule->jam_pulang_mulai);
+                  $cek = Absensi::where('name', $name)->where('tanggal', $date)->first();
+                  if ($cek) {
+                      // dd($cek);
+                      $upd = Absensi::where('id', $cek->id)->update([
+                          'jam_pulang' => $time,
+                      ]);
+                  } else {
+                      //dd($cek);
+                      Absensi::create([
+                          'name' => $name,
+                          'tanggal' => $date,
+                          'jam_masuk' => $time,
+                      ]);
+                  }
               }
-            }
-
-            $create[] = [
-              'user_id' => $users->id,
-              'datetime' => $datetime,
-              'mesin_id' => $value->id,
-              'status' => $status,
-              'created_at' => $datetime,
-              'updated_at' => now()
-            ];
-            $ud = new LogFingerprint;
-            $ud->user_id = $users->id;
-            $ud->datetime = $datetime;
-            $ud->mesin_id = $value->id;
-            $ud->status = $status;
-            $ud->sync_id = $sync->id;
-            $ud->created_at = $datetime;
-            $ud->updated_at = now();
-            $ud->save();
+              $create[] = [
+                'name' => $name,
+                'datetime' => $datetime,
+                'machine_id' => $value->id,
+                'created_at' => $datetime
+              ];
+              $ud = new LogFingerprint;
+              $ud->name = $name;
+              $ud->datetime = $datetime;
+              $ud->mesin_id = $value->id;
+              $ud->status = $status;
+              $ud->sync_id = $sync->id;
+              $ud->created_at = $datetime;
+              $ud->updated_at = now();
+              $ud->save();
           }
-        }
+      }
       }
       echo count($create) . '<br>';
       //print_r($export);
       print_r($create);
+      //dd($create);
+
 
       echo "bates per mesin<br><br>";
       // UD::insert($create);
+     // Alert::success('Sukses', 'Untuk yang 1!');
+
     }
-    return redirect()->back();
+   // return redirect()->back();
   }
 }

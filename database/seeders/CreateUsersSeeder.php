@@ -13,7 +13,6 @@ class CreateUsersSeeder extends Seeder
     {
         $users = [
             [
-               'username'=>'201904024',
                'name'=>'Luthfiyah Sakinah',
                'email'=>'user@gmailabsen.com',
                'type'=>1,
@@ -21,7 +20,6 @@ class CreateUsersSeeder extends Seeder
                'password'=> bcrypt('123456'),
             ],
             [
-               'username'=>'201804001',
                'name'=>'Super Admin',
                'email'=>'superadmin@gmail.com',
                'type'=>2,
@@ -34,18 +32,17 @@ class CreateUsersSeeder extends Seeder
             User::create($user);
         }
 
-        $faker = Faker::create('id_ID');
+        // $faker = Faker::create('id_ID');
         
-        for ($i=0; $i < 50 ; $i++) { 
-            User::create([
-                'username'=> $faker->numberBetween(201801001,202001001),
-                'name'=>  $faker->name,
-                'email'=>  $faker->email,
-                'no_hp' => $faker->phoneNumber,
-                'type'=> 1,
-                'departemen_id'=>  $faker->numberBetween(1,3),
-                'password'=> bcrypt('123456'),
-            ]);
-        } 
+        // for ($i=0; $i < 50 ; $i++) { 
+        //     User::create([
+        //         'name'=>  $faker->name,
+        //         'email'=>  $faker->email,
+        //         'no_hp' => $faker->phoneNumber,
+        //         'type'=> 1,
+        //         'departemen_id'=>  $faker->numberBetween(1,3),
+        //         'password'=> bcrypt('123456'),
+        //     ]);
+        // } 
     }
 }

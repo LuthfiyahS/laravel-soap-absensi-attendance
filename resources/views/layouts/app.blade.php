@@ -27,6 +27,8 @@
 
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/bootstrap-datetimepicker.min.css"/>
 
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/plugins/simple-calendar/simple-calendar.css"/>
+
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/style.css">
 
     
@@ -69,7 +71,7 @@
 
 
             <ul class="nav user-menu">
-                <li class="nav-item dropdown noti-dropdown me-2">
+                {{-- <li class="nav-item dropdown noti-dropdown me-2">
                     <a href="#" class="dropdown-toggle nav-link header-nav-list" data-bs-toggle="dropdown">
                         <img src="{{ asset('theme') }}/assets/img/icons/header-icon-05.svg" alt="">
                     </a>
@@ -153,7 +155,7 @@
                             <a href="#">View all Notifications</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="nav-item zoom-screen me-2">
                     <a href="#" class="nav-link header-nav-list">
@@ -193,7 +195,7 @@
                                 {{-- <p class="text-muted mb-0">Administrator</p> --}}
                             </div>
                         </div>
-                        <a class="dropdown-item" href="profile.html">My Profile</a>
+                        {{-- <a class="dropdown-item" href="profile.html">My Profile</a> --}}
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -236,15 +238,18 @@
         <script src="{{ asset('theme') }}/assets/plugins/select2/js/select2.min.js"></script>
 
         <script src="{{ asset('theme') }}/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.js"></script>
         {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> --}}
 
         
-        <script src="{{ asset('theme') }}/assets/plugins/datatables/datatables.min.js"></script>
+        
 
         <script src="{{ asset('theme') }}/assets/plugins/moment/moment.min.js"></script>
         <script src="{{ asset('theme') }}/assets/js/bootstrap-datetimepicker.min.js"></script>
 
+        <script src="{{ asset('theme') }}/assets/plugins/simple-calendar/jquery.simple-calendar.js"></script>
+        <script src="{{ asset('theme') }}/assets/js/calander.js"></script>
 
         <script src="{{ asset('theme') }}/assets/js/script.js"></script>
 </body>

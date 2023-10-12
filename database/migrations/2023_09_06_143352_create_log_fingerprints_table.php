@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('log_fingerprints', function (Blueprint $table) {
             $table->id();
             //$table->unsignedBigInteger('user_id');
-            $table->foreignId('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreignId('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
             $table->datetime('datetime');
             $table->foreignId('mesin_id')->references('id')->on('mesin_fingerprints')->onUpdate('cascade')->onDelete('cascade');
             $table->string('status');
